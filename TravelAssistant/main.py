@@ -10,7 +10,7 @@ st.set_page_config(
     page_icon="🚀"
 )
 #Background
-BG_SOURCE = "https://giphy.com/gifs/forest-landscape-RoFXqXWN639Qs"
+BG_SOURCE = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHU1ODZzMHBpdGlwMnlnNWVtMmI4NXA4dnoyYm0wZ2JzdDhwdzhsOCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/RoFXqXWN639Qs/giphy.gif"
 # ==========================================================
 
 def background_html(src: str) -> str:
