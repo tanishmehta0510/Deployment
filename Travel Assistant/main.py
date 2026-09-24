@@ -5,7 +5,10 @@ from dotenv import load_dotenv
 load_dotenv()
 client = genai.Client()
 
-st.title("Travel Assistant")
+st.set_page_config(
+    page_title="Travel Assistant",
+    page_icon="🚀"
+)
 #Background
 BG_SOURCE = "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bTF2ZnR0YXZwNnNyd3g1ZWphM2phamJzYXJwNzYxcjI2NGl5MnpmbyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xUA7aPhCAs5QRvMMJa/giphy.gif"
 # ==========================================================
