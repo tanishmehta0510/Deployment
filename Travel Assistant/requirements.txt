@@ -1,3 +1,3 @@
-google-gemini
+google-genai
 streamlit
 python-dotenv
