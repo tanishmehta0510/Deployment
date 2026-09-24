@@ -1,0 +1,3 @@
+google-gemini
+streamlit
+python-dotenv
