@@ -2,13 +2,13 @@ import streamlit as st
 from google import genai
 from dotenv import load_dotenv
 
-load_dotenv()
-client = genai.Client()
-
 st.set_page_config(
     page_title="Travel Assistant",
     page_icon="🚀"
 )
+load_dotenv()
+client = genai.Client()
+
 #Background
 BG_SOURCE = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHU1ODZzMHBpdGlwMnlnNWVtMmI4NXA4dnoyYm0wZ2JzdDhwdzhsOCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/RoFXqXWN639Qs/giphy.gif"
 # ==========================================================
@@ -270,7 +270,7 @@ with st.container(key="input_card"):
     travel_type = st.radio("Please select travel-type", ["Family", "Solo", "Friends", "Other"])
     details = st.text_area("Please provide any specific requirements if any...", placeholder="Enter what you wish to keep in mind while generating itinerary...")
 
-prompt = f"""Act as a travel assistant. 
+prompt = f"""Trip Details:
     Destination = {destination}
     No of days of trip = {days}
     Budget = {budget}
@@ -280,9 +280,10 @@ prompt = f"""Act as a travel assistant.
 
 if st.button("Plan Trip"):
     with st.spinner("Generating best itinerary for the trip...", show_time=True):
-        interaction = client.interactions.create(
+        stream = client.interactions.create(
                 model="gemini-3.5-flash-lite",
                 input=prompt,
+                stream=True,
                 system_instruction="""Provide helpful and informative responses to the user's travel-related queries.
                     Be direct and clear. Answer in syntax (always when needed but if needed only, or you can even apply syntax but add/remove parameters of syntax if you feel not necessary for given input) - Answer to users question relating previous chat (if any, not always), destinations covered in trip, duration of trip, mode of transports in between locations of the trip (transit transport modes), usual climate condition and any other such relevant parameter.
                     Do not generate parameters in code-like snippets but in bullets/lists only.
@@ -303,6 +304,18 @@ if st.button("Plan Trip"):
                     Response must be easy to read and good to look (colorful).
                     """
             )
+        stream_iter=iter(stream)
+        first_text = None
+        for event in stream_iter:
+            if event.event_type == "step.delta" and event.delta.type == "text":
+                first_text = event.delta.text
+                break
     st.success("Itinerary successfully generated...")
     with st.container(key="result_card"):
-        st.write(interaction.output_text)
+        def chunk_gen():
+            if first_text:
+                yield first_text
+            for event in stream_iter:
+                if event.event_type == "step.delta" and event.delta.type == "text":
+                    yield event.delta.text
+        st.write_stream(chunk_gen())
