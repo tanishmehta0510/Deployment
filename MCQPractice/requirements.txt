@@ -1,0 +1,5 @@
+requests
+dotenv
+google-genai
+rich
+streamlit
