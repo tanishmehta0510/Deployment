@@ -1,0 +1,6 @@
+order_id,date,product,qty,price
+NAG-2001,2026-11-01,Rice,5,55
+NAG-2002,01-11-2026,Oil,2,165
+NAG-2003,2026-11-01,Tea,1,abc
+NAG-2004,2026-11-01,,2,40
+NAG-2005,2026-11-01,Sugar,4,48
